@@ -100,7 +100,7 @@
 								
 								<a href="ViewEtudiantServlet?id=<%=student.getId()%>" style="color:blue">View</a>
 								
-								<a href="EtudiantCoursServlet?id=<%=student.getId()%>" style="color:blue">Cours</a>
+								<!--  <a href="EtudiantCoursServlet?id=<%=student.getId()%>" style="color:blue">Cours</a> -->
 								
 							
 							</li>

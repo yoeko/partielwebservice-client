@@ -17,4 +17,88 @@
 		<url-pattern>/ConnexionServlet</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>EtudiantServlet</servlet-name>
+		<display-name>EtudiantServlet</display-name>
+		<description>servlet liste etudiant</description>
+		<servlet-class>servlets.EtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>EtudiantServlet</servlet-name>
+		<url-pattern>/EtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AjoutEtudiantServlet</servlet-name>
+		<display-name>AjoutEtudiantServlet</display-name>
+		<description>servlet ajout etudiant</description>
+		<servlet-class>servlets.AjoutEtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>AjoutEtudiantServlet</servlet-name>
+		<url-pattern>/AjoutEtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SupprimerEtudiantServlet</servlet-name>
+		<display-name>SupprimerEtudiantServlet</display-name>
+		<description>servlet supprimer etudiant</description>
+		<servlet-class>servlets.SupprimerEtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>SupprimerEtudiantServlet</servlet-name>
+		<url-pattern>/SupprimerEtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ModifEtudiantServlet</servlet-name>
+		<display-name>ModifEtudiantServlet</display-name>
+		<description>servlet modifier etudiant</description>
+		<servlet-class>servlets.ModifEtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ModifEtudiantServlet</servlet-name>
+		<url-pattern>/ModifEtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>EditerEtudiantServlet</servlet-name>
+		<display-name>EditerEtudiantServlet</display-name>
+		<description>servlet modifier etudiant</description>
+		<servlet-class>servlets.EditerEtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>EditerEtudiantServlet</servlet-name>
+		<url-pattern>/EditerEtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>RechercheEtudiantServlet</servlet-name>
+		<display-name>RechercheEtudiantServlet</display-name>
+		<description>servlet rechercher etudiant</description>
+		<servlet-class>servlets.RechercheEtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>RechercheEtudiantServlet</servlet-name>
+		<url-pattern>/RechercheEtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ViewEtudiantServlet</servlet-name>
+		<display-name>ViewEtudiantServlet</display-name>
+		<description>servlet rechercher etudiant</description>
+		<servlet-class>servlets.ViewEtudiantServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ViewEtudiantServlet</servlet-name>
+		<url-pattern>/ViewEtudiantServlet</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

@@ -11,31 +11,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ensup.partiel.dao.EtudiantDao;
-import com.ensup.partiel.dao.IEtudiantDao;
-import com.ensup.partiel.domaine.Cours;
-import com.ensup.partiel.domaine.Etudiant;
-import com.ensup.partiel.domaine.User;
-import com.ensup.partiel.service.CoursService;
-import com.ensup.partiel.service.EtudiantService;
-import com.ensup.partiel.service.UserService;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import domaine.Etudiant;
+import domaine.User;
+
 
 /**
  * Servlet implementation class SupprimerEtudiantServlet
  */
 public class SupprimerEtudiantServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private EtudiantService studentService;
-	private CoursService courseService;
+//	private EtudiantService studentService;
+//	private CoursService courseService;
 	private RequestDispatcher dispatcher = null;
 	private User user = null;
-	private IEtudiantDao etudiantDao = new EtudiantDao();
+//	private IEtudiantDao etudiantDao = new EtudiantDao();
 
 	/**
 	 * Default constructor.
 	 */
 	public SupprimerEtudiantServlet() {
-		studentService = new EtudiantService(etudiantDao);
+//		studentService = new EtudiantService(etudiantDao);
 	}
 
 	/**
@@ -69,14 +71,24 @@ public class SupprimerEtudiantServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String object = request.getParameter("id");
 		int id = Integer.valueOf(object);
-				
-		studentService.deleteEtudiant((long) id);
+		
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		
+		
+		
+		WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/delete/"+id);
+
+		webResource.type("application/json").delete(ClientResponse.class);
+		
+		
 
 		dispatcher = request.getRequestDispatcher("etudiant.jsp");
 		
 		user = (User) session.getAttribute("user");
 		session.setAttribute("students", lister());
-		session.setAttribute("courses", getAllCours());
+//		session.setAttribute("courses", getAllCours());
 		session.setAttribute("student", null);
 		
 		
@@ -89,24 +101,35 @@ public class SupprimerEtudiantServlet extends HttpServlet {
 		List<Etudiant> students = Collections.emptyList();
 		try {
 			
-			students = studentService.getAllStudent();
+//			students = studentService.getAllStudent();
+			
+			DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+			defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+			Client client = Client.create(defaultClientConfig);
+			
+			
+			
+			WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/get");
+
+			 students = webResource.get(new GenericType<List<Etudiant>>(){});
+			
 			
 		} catch (Exception e) {
 
 		}
 		return students;
 	}
-
-	private List<Cours> getAllCours() {
-
-		List<Cours> courses = Collections.emptyList();
-		try {
-
-			courses = courseService.getAllCours();
-		} catch (Exception e) {
-
-		}
-		return courses;
-	}
+//
+//	private List<Cours> getAllCours() {
+//
+//		List<Cours> courses = Collections.emptyList();
+//		try {
+//
+//			courses = courseService.getAllCours();
+//		} catch (Exception e) {
+//
+//		}
+//		return courses;
+//	}
 
 }

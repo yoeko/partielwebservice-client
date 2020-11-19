@@ -10,8 +10,6 @@
 
 *.jar
 
-*.war
-
 *.ear
 
 *.nar

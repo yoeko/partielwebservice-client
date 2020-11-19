@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,21 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ensup.partiel.domaine.*;
-import com.ensup.partiel.service.CoursService;
-import com.ensup.partiel.service.EtudiantService;
-import com.ensup.partiel.dao.EtudiantDao;
-import com.ensup.partiel.dao.IEtudiantDao;
-
 /**
  * Servlet implementation class EtudiantCoursServlet
  */
 public class EtudiantCoursServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private EtudiantService studentService;
-	private CoursService courseService;
+//	private EtudiantService studentService;
+//	private CoursService courseService;
 	private RequestDispatcher dispatcher = null;
-	private IEtudiantDao etudiantDao = new EtudiantDao();
+//	private IEtudiantDao etudiantDao = new EtudiantDao();
 
 	/**
 	 * Default constructor.
@@ -38,8 +31,8 @@ public class EtudiantCoursServlet extends HttpServlet {
     public EtudiantCoursServlet() {
         super();
         // TODO Auto-generated constructor stub
-        studentService = new EtudiantService(etudiantDao);
-        courseService = new CoursService();
+//        studentService = new EtudiantService(etudiantDao);
+//        courseService = new CoursService();
     }
 
 	/**
@@ -58,10 +51,10 @@ public class EtudiantCoursServlet extends HttpServlet {
 		
 		String email = request.getParameter("mail") ;
 		String course = request.getParameter("listeCours");		
-		Etudiant student = studentService.getEtudiantByEmail(email);
+//		Etudiant student = studentService.getEtudiantByEmail(email);
 		HttpSession session = request.getSession();
 		
-		System.out.println(course + " " +student.getId());
+//		System.out.println(course + " " +student.getId());
 		
 //		courseService.associateCourse(course, student.getId());	
 		dispatcher = request.getRequestDispatcher("etudiant.jsp");
@@ -74,12 +67,12 @@ public class EtudiantCoursServlet extends HttpServlet {
 		String object = request.getParameter("id");
 		int id = Integer.valueOf(object);
 				
-		Etudiant student = studentService.getEtudiant((long) id);
-		List<Cours> listCours=courseService.getAllCours();
+//		Etudiant student = studentService.getEtudiant((long) id);
+//		List<Cours> listCours=courseService.getAllCours();
 
 		dispatcher = request.getRequestDispatcher("etudiantCours.jsp");
-		session.setAttribute("student", student);
-		session.setAttribute("courses", listCours);
+//		session.setAttribute("student", student);
+//		session.setAttribute("courses", listCours);
 
 		dispatcher.forward(request, response);
 	}

@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,26 +10,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ensup.partiel.dao.EtudiantDao;
-import com.ensup.partiel.dao.IEtudiantDao;
-import com.ensup.partiel.domaine.Etudiant;
-import com.ensup.partiel.service.CoursService;
-import com.ensup.partiel.service.EtudiantService;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import domaine.Etudiant;
 
 /**
  * Servlet implementation class EditerEtudiantServlet
  */
 public class EditerEtudiantServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private EtudiantService studentService;
+//	private static final long serialVersionUID = 1L;
+//	private EtudiantService studentService;
 	private RequestDispatcher dispatcher = null;
-	private IEtudiantDao etudiantDao = new EtudiantDao();
+//	private IEtudiantDao etudiantDao = new EtudiantDao();
 
 	/**
 	 * Default constructor.
 	 */
 	public EditerEtudiantServlet() {
-		studentService = new EtudiantService(etudiantDao);
+//		studentService = new EtudiantService(etudiantDao);
 	}
 
 	/**
@@ -62,7 +67,18 @@ public class EditerEtudiantServlet extends HttpServlet {
 		String object = request.getParameter("id");
 		int id = Integer.valueOf(object);
 				
-		Etudiant student = studentService.getEtudiant((long) id);
+//		Etudiant student = studentService.getEtudiant((long) id);
+		
+		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+		Client client = Client.create(defaultClientConfig);
+		
+		
+		WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/detail/"+id);
+
+		ClientResponse response2 = webResource.type("application/json").get(ClientResponse.class);
+		
+		Etudiant student =  response2.getEntity(new GenericType<Etudiant>(){});
 
 		dispatcher = request.getRequestDispatcher("etudiantModif.jsp");
 

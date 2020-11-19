@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,11 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
@@ -120,7 +123,7 @@ public class ConnexionServlet extends HttpServlet {
 			dispatcher = request.getRequestDispatcher("home.jsp");
 			HttpSession session = request.getSession();
 			session.setAttribute("user", userRetour);
-//			session.setAttribute("students", lister());
+			session.setAttribute("students", lister());
 //			session.setAttribute("courses", getAllCourses());
 
 		} else {
@@ -130,26 +133,21 @@ public class ConnexionServlet extends HttpServlet {
 		
 	}
 
-//	private List<Etudiant> lister() {
-//		
-//		List<Etudiant> students = Collections.emptyList();
-//		try {
-//			students = studentService.getAllStudent();
-//		} catch (Exception e) {
-//
-//		}
-//		return students;
-//	}
-//	
-//	private List<Cours> getAllCourses() {
-//			
-//			List<Cours> courses = Collections.emptyList();
-//			try {
-//				
-//				courses = courseService.getAllCours();
-//			} catch (Exception e) {
-//	
-//			}
-//			return courses;
-//	}
+	public List<Etudiant> lister() {
+
+			DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+			defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+			Client client = Client.create(defaultClientConfig);
+			
+			
+			WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/get");
+
+			ClientResponse response2 = webResource.accept("application/json").get(ClientResponse.class);
+
+			
+			return (List<Etudiant>) response2.getEntity(new GenericType<List<Etudiant>>(){});
+		
+	}
+
+
 }
