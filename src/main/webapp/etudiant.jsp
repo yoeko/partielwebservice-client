@@ -43,8 +43,7 @@
 
 	<!-- Masthead Heading-->
 	<%
-		List<Etudiant> listEtudiant = new ArrayList<Etudiant>();
-		listEtudiant = (List<Etudiant>) session.getAttribute("students");
+		List<Etudiant> listEtudiant =  (List<Etudiant>) session.getAttribute("students");
 		if (user.getProfil().equalsIgnoreCase("D")) {
 			
 		%>

@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,14 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ensup.partiel.dao.EtudiantDao;
-import com.ensup.partiel.dao.IEtudiantDao;
-import com.ensup.partiel.domaine.Cours;
-import com.ensup.partiel.domaine.Etudiant;
-import com.ensup.partiel.domaine.User;
-import com.ensup.partiel.service.CoursService;
-import com.ensup.partiel.service.EtudiantService;
-import com.ensup.partiel.service.UserService;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import domaine.Etudiant;
+import domaine.User;
+
+
 
 /**
  * Servlet implementation class EtudiantServlet
@@ -28,18 +33,18 @@ import com.ensup.partiel.service.UserService;
 public class EtudiantServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private EtudiantService studentService;
-	private CoursService courseService;
+//	private EtudiantService studentService;
+//	private CoursService courseService;
 	private RequestDispatcher dispatcher = null;
 	private User user = null;
-	private IEtudiantDao etudiantDao = new EtudiantDao();
+//	private IEtudiantDao etudiantDao = new EtudiantDao();
 	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public EtudiantServlet() {
-		courseService = new CoursService();
-		studentService = new EtudiantService(etudiantDao);
+//		courseService = new CoursService();
+//		studentService = new EtudiantService(etudiantDao);
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class EtudiantServlet extends HttpServlet {
 		
 
 		session.setAttribute("students", lister());
-		session.setAttribute("courses", getAllCours());
+		//session.setAttribute("courses", getAllCours());
 		
 		dispatcher = request.getRequestDispatcher("etudiant.jsp");
 		dispatcher.forward(request, response);
@@ -72,26 +77,29 @@ public class EtudiantServlet extends HttpServlet {
 
 	private List<Etudiant> lister() {
 
-		List<Etudiant> students = Collections.emptyList();
+		List<Etudiant>  students = null;
 		try {
-			if(user.getProfil().equalsIgnoreCase("D")) {
-			students = studentService.getAllStudent();
-			} 
+			
+//			students = studentService.getAllStudent();
+			
+			DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+			defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+			Client client = Client.create(defaultClientConfig);
+			
+			
+			WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/get");
+
+			ClientResponse response2 = webResource.type("application/json").get(ClientResponse.class);
+
+			 students = (List<Etudiant>) response2.getEntity(Etudiant.class);
+			 System.out.println(students.get(1));
+			
 		} catch (Exception e) {
 
 		}
 		return students;
 	}
 
-	private List<Cours> getAllCours() {
 
-		List<Cours> courses = Collections.emptyList();
-		try {
-
-			courses = courseService.getAllCours();
-		} catch (Exception e) {
-
-		}
-		return courses;
-	}
+	
 }

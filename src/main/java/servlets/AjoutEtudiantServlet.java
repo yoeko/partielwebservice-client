@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
@@ -85,7 +86,7 @@ public class AjoutEtudiantServlet extends HttpServlet {
 		
 		
 		session.setAttribute("students", lister());
-		session.setAttribute("courses", getAllCourses());
+		//session.setAttribute("courses", getAllCourses());
 		if(user.getProfil().equalsIgnoreCase("directeur")) {
 			dispatcher = request.getRequestDispatcher("etudiant.jsp");
 		}
@@ -110,14 +111,11 @@ public class AjoutEtudiantServlet extends HttpServlet {
 			defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 			Client client = Client.create(defaultClientConfig);
 			
-			ObjectMapper mapper = new ObjectMapper();
-			String jsonString = mapper.writeValueAsString(student);
 			
-			WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/getAll");
+			
+			WebResource webResource = client.resource("http://localhost:8080/partielwebservice-webservice/rest/json/student/get");
 
-			ClientResponse response2 = webResource.type("application/json").get(ClientResponse.class, jsonString);
-			
-			
+			 students = webResource.get(new GenericType<List<Etudiant>>(){});
 			
 			
 		} catch (Exception e) {
